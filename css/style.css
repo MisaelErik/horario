@@ -1,0 +1,84 @@
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a8a8a8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+        .schedule-cell {
+            position: relative;
+        }
+        #schedule-table {
+            table-layout: fixed;
+        }
+        .schedule-overlay {
+    z-index: 1;
+}
+
+.class-block {
+    border-radius: 0.375rem;
+    padding: 2px 4px;
+    font-size: 10px;
+    line-height: 1.2;
+    border-left-width: 4px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    color: #1f2937; /* Texto oscuro para mejor contraste */
+    white-space: normal;
+    word-wrap: break-word;
+    z-index: 10;
+    pointer-events: auto; /* Para que los bloques sean clickeables si se necesita */
+    position: absolute;
+    width: 100%;
+    left: 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .class-block {
+        font-size: 9px; /* Slightly smaller font for mobile */
+        padding: 1px 3px; /* Reduced padding for mobile */
+    }
+}
+        .cycle-header {
+            cursor: pointer;
+            user-select: none;
+        }
+        .cycle-header svg {
+            transition: transform 0.2s;
+        }
+        .cycle-courses.hidden + .cycle-header svg {
+            transform: rotate(-90deg);
+        }
+
+        @media (max-width: 768px) {
+            #schedule-table th, #schedule-table td {
+                padding: 0.5rem; /* Reduce padding for smaller screens */
+                font-size: 0.75rem; /* Smaller font size for table content */
+            }
+
+            #schedule-table {
+                min-width: 1000px; /* Ensure table is wide enough to scroll horizontally */
+            }
+
+            .container {
+                padding: 1rem; /* Reduce overall container padding on mobile */
+            }
+
+            h1 {
+                font-size: 2rem; /* Adjust main heading size for mobile */
+            }
+
+            h2 {
+                font-size: 1.25rem; /* Adjust sub-heading size for mobile */
+            }
+        }
