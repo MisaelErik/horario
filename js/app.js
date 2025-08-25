@@ -4,6 +4,7 @@
         const colors = ['#a7f3d0', '#bae6fd', '#fef08a', '#fecaca', '#e9d5ff', '#fed7aa', '#d1fae5', '#cffafe', '#fde68a', '#fee2e2'];
         let courseColorMap = {};
         let colorIndex = 0;
+        let conflictToResolve = null; // Para manejar el estado del conflicto
 
         const courseListContainer = document.getElementById('course-list');
         const scheduleBody = document.getElementById('schedule-body');
@@ -199,68 +200,121 @@ function removeCourse(courseCode) {
     // 2. Renderizar los bloques de curso directamente en las celdas
     // Esperar a que la tabla se renderice para obtener las referencias a las celdas
     setTimeout(() => {
+        const classesToRender = [];
+        const classesByDayAndCourseSection = {}; // Group by day, course code, and section ID
+
         selectedCourses.forEach(selected => {
             const course = selected.curso;
             const section = selected.seccion;
             const color = courseColorMap[course.codigo];
 
             section.clases.forEach(clase => {
-                const classRange = parseTimeRange(clase.hora);
-                const dayIndex = days.indexOf(clase.dia);
-
-                if (dayIndex !== -1) {
-                    // Find the row based on the class start time
-                    const startTimeMinutes = classRange.start;
-                    let rowIndex = -1;
-                    for (let i = 0; i < timeSlots.length; i++) {
-                        if (startTimeMinutes >= timeToMinutes(timeSlots[i].start) && startTimeMinutes < timeToMinutes(timeSlots[i].end)) {
-                            rowIndex = i;
-                            break;
-                        }
-                    }
-
-                    if (rowIndex !== -1) {
-                        const targetCell = scheduleBody.rows[rowIndex].cells[dayIndex + 1]; // +1 for time column
-
-                        let timeHtml = '';
-                        const startTime = clase.hora.split(' a ')[0].trim();
-                        if (!standardStartTimes.includes(startTime)) {
-                            timeHtml = `<p class="text-xs">${clase.hora}</p>`;
-                        }
-
-                        const blockContent = `<strong class="font-bold">${course.nombre}</strong><p class="text-xs">${section.docente}</p>${timeHtml}<p class="text-xs">Aula: ${clase.aula} (${clase.tipo})</p>`;
-                        
-                        // Append content to the cell, or replace if it's the first class
-                        if (targetCell.innerHTML === '') {
-                            targetCell.innerHTML = `<div class="class-block" style="background-color: ${color}; border-color: ${darkenColor(color, -30)};">${blockContent}</div>`;
-                        } else {
-                            // If there's already content, append the new block
-                            targetCell.innerHTML += `<div class="class-block mt-1" style="background-color: ${color}; border-color: ${darkenColor(color, -30)};">${blockContent}</div>`;
-                        }
-                    }
+                const key = `${clase.dia}-${course.codigo}-${section.id}`;
+                if (!classesByDayAndCourseSection[key]) {
+                    classesByDayAndCourseSection[key] = [];
                 }
+                classesByDayAndCourseSection[key].push({
+                    ...clase,
+                    courseName: course.nombre,
+                    docente: section.docente,
+                    color: color,
+                    sectionId: section.id,
+                    courseCode: course.codigo,
+                    originalCourse: course, // Keep original course data for merging
+                    originalSection: section // Keep original section data for merging
+                });
             });
         });
-    }, 0);
-}
 
-        function editSchedule(scheduleId) {
-    const savedSchedules = JSON.parse(localStorage.getItem('savedSchedules')) || [];
-    const scheduleToEdit = savedSchedules.find(s => s.id === scheduleId);
+        // Merge consecutive classes
+        for (const key in classesByDayAndCourseSection) {
+            const dayCourseSectionClasses = classesByDayAndCourseSection[key].sort((a, b) => timeToMinutes(a.hora.split(' a ')[0]) - timeToMinutes(b.hora.split(' a ')[0]));
 
-    if (scheduleToEdit) {
-        // Marcar los radio buttons correspondientes
-        document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
-        scheduleToEdit.courses.forEach(course => {
-            const radio = document.querySelector(`input[name="course-${course.curso.codigo}"][value="${course.seccion.id}"]`);
-            if (radio) {
-                radio.checked = true;
+            let i = 0;
+            while (i < dayCourseSectionClasses.length) {
+                let currentClass = dayCourseSectionClasses[i];
+                let mergedClass = { ...currentClass };
+                let j = i + 1;
+
+                while (j < dayCourseSectionClasses.length) {
+                    let nextClass = dayCourseSectionClasses[j];
+                    const currentEnd = parseTimeRange(mergedClass.hora).end;
+                    const nextStart = parseTimeRange(nextClass.hora).start;
+
+                    // Check if consecutive and same professor/aula
+                    if (currentEnd === nextStart &&
+                        mergedClass.docente === nextClass.docente &&
+                        mergedClass.aula === nextClass.aula) {
+                        
+                        // Merge times
+                        mergedClass.hora = `${mergedClass.hora.split(' a ')[0]} a ${nextClass.hora.split(' a ')[1]}`;
+                        j++;
+                    } else {
+                        break;
+                    }
+                }
+                classesToRender.push(mergedClass);
+                i = j;
+            }
+        }
+
+        classesToRender.forEach(clase => {
+            const classRange = parseTimeRange(clase.hora);
+            const dayIndex = days.indexOf(clase.dia);
+
+            if (dayIndex !== -1) {
+                // Find the row based on the class start time
+                const startTimeMinutes = classRange.start;
+                let rowIndex = -1;
+                for (let i = 0; i < timeSlots.length; i++) {
+                    if (startTimeMinutes >= timeToMinutes(timeSlots[i].start) && startTimeMinutes < timeToMinutes(timeSlots[i].end)) {
+                        rowIndex = i;
+                        break;
+                    }
+                }
+
+                if (rowIndex !== -1) {
+                    const targetCell = scheduleBody.rows[rowIndex].cells[dayIndex + 1]; // +1 for time column
+
+                    // Calculate top and height relative to the current time slot's cell
+                    const slotStartMinutes = timeToMinutes(timeSlots[rowIndex].start);
+                    const slotEndMinutes = timeToMinutes(timeSlots[rowIndex].end);
+                    const slotDurationMinutes = slotEndMinutes - slotStartMinutes;
+                    
+                    // Calculate pixels per minute for the current cell
+                    const pixelsPerMinute = rowHeight / slotDurationMinutes;
+
+                    const classStartMinutes = classRange.start;
+                    const classEndMinutes = classRange.end;
+
+                    const topOffset = (classStartMinutes - slotStartMinutes) * pixelsPerMinute;
+                    const blockHeight = (classEndMinutes - classStartMinutes) * pixelsPerMinute;
+
+                    let timeHtml = '';
+                    // Only show time if it's not a standard slot start
+                    if (!standardStartTimes.includes(clase.hora.split(' a ')[0].trim())) {
+                        timeHtml = `<p class="text-xs">${clase.hora}</p>`;
+                    }
+
+                    const blockContent = `<strong class="font-bold">${clase.courseName}</strong><p class="text-xs">${clase.docente}</p>${timeHtml}<p class="text-xs">Aula: ${clase.aula} (${clase.tipo})</p>`;
+                    
+                    // Create the class-block div with absolute positioning within the cell
+                    const blockDiv = document.createElement('div');
+                    blockDiv.className = 'class-block absolute';
+                    blockDiv.style.top = `${topOffset}px`;
+                    blockDiv.style.height = `${blockHeight}px`;
+                    blockDiv.style.width = '100%';
+                    blockDiv.style.left = '0';
+                    blockDiv.style.backgroundColor = clase.color;
+                    blockDiv.style.borderColor = darkenColor(clase.color, -30);
+                    blockDiv.innerHTML = blockContent;
+
+                    // Append the block to the target cell
+                    targetCell.appendChild(blockDiv);
+                }
             }
         });
-
-        selectedCourses = scheduleToEdit.courses;
-        updateUI();
-    }
+    }, 0);
 }
 
         function renderSelectedCourses() {
@@ -299,7 +353,7 @@ function removeCourse(courseCode) {
             if (g > 255) g = 255; else if (g < 0) g = 0;
             let b = (num & 0x0000FF) + amount;
             if (b > 255) b = 255; else if (b < 0) b = 0;
-            return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16).padStart(6, '0');
+            return (usePound ? "#" : "") + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
         }
 
         function updateUI() {
@@ -337,6 +391,11 @@ function removeCourse(courseCode) {
             downloadContainer.style.backgroundColor = 'white';
 
             const header = document.querySelector('header').cloneNode(true);
+            // Modify the h1 text for download
+            const h1Element = header.querySelector('h1');
+            if (h1Element) {
+                h1Element.textContent = 'Horario 2025-B';
+            }
             const scheduleContainer = document.getElementById('schedule-container').cloneNode(true);
             const buttons = scheduleContainer.querySelector('.flex.gap-2');
             if (buttons) {
@@ -369,6 +428,11 @@ function removeCourse(courseCode) {
             downloadContainer.style.backgroundColor = 'white';
 
             const header = document.querySelector('header').cloneNode(true);
+            // Modify the h1 text for download
+            const h1Element = header.querySelector('h1');
+            if (h1Element) {
+                h1Element.textContent = 'Horario 2025-B';
+            }
             const scheduleContainer = document.getElementById('schedule-container').cloneNode(true);
             const buttons = scheduleContainer.querySelector('.flex.gap-2');
             if (buttons) {
@@ -497,12 +561,25 @@ function editSchedule(scheduleId) {
     if (scheduleToEdit) {
         selectedCourses = scheduleToEdit.courses;
         updateUI();
-        // Marcar los radio buttons correspondientes
+        renderCourseList(); // Re-render course list to update radio buttons
+
+        // Uncheck all radio buttons first
         document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+
+        // Check the radio buttons for the loaded courses and expand their cycles
         selectedCourses.forEach(course => {
             const radio = document.querySelector(`input[name="course-${course.curso.codigo}"][value="${course.seccion.id}"]`);
             if (radio) {
                 radio.checked = true;
+
+                // Expand the cycle if it's hidden
+                const cycleCoursesDiv = radio.closest('.cycle-courses');
+                if (cycleCoursesDiv && cycleCoursesDiv.classList.contains('hidden')) {
+                    const cycleHeader = cycleCoursesDiv.previousElementSibling;
+                    if (cycleHeader) {
+                        toggleCycle(cycleHeader);
+                    }
+                }
             }
         });
     }
@@ -538,8 +615,6 @@ function downloadSavedSchedule(scheduleId, format) {
         updateUI();
     }
 }
-
-let conflictToResolve = null; // Para manejar el estado del conflicto
 
 document.addEventListener('DOMContentLoaded', () => {
     renderCourseList();

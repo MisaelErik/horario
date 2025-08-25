@@ -17,6 +17,7 @@
         }
         .schedule-cell {
             position: relative;
+            overflow: visible; /* Allow absolutely positioned children to extend beyond cell boundaries */
         }
         #schedule-table {
             table-layout: fixed;
