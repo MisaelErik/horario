@@ -16,6 +16,7 @@
         const downloadPdfBtn = document.getElementById('download-pdf-btn');
         const downloadExcelBtn = document.getElementById('download-excel-btn');
         const saveScheduleBtn = document.getElementById('save-schedule-btn');
+        const clearScheduleBtn = document.getElementById('clear-schedule-btn');
 
         function timeToMinutes(timeStr) {
             const [hours, minutes] = timeStr.split(':').map(Number);
@@ -109,6 +110,12 @@ function removeCourse(courseCode) {
             updateUI();
         }
 
+        function clearSchedule() {
+            selectedCourses = [];
+            document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+            updateUI();
+        }
+
         function renderCourseList() {
             const coursesByCycle = coursesData.reduce((acc, course) => {
                 const cycleKey = course.ciclo;
@@ -174,10 +181,8 @@ function removeCourse(courseCode) {
     const rowHeight = 80; // pixels
     const scheduleTable = document.getElementById('schedule-table');
     const scheduleBody = document.getElementById('schedule-body');
-    const scheduleOverlay = document.getElementById('schedule-overlay');
 
-    // Limpiar el overlay y el body
-    scheduleOverlay.innerHTML = '';
+    // Limpiar el body
     scheduleBody.innerHTML = '';
 
     // 1. Crear la rejilla de la tabla
@@ -191,18 +196,9 @@ function removeCourse(courseCode) {
     });
     scheduleBody.innerHTML = tableRowsHTML;
 
-    // 2. Renderizar los bloques de curso en el overlay
-    // Esperar a que la tabla se renderice para obtener las dimensiones correctas
+    // 2. Renderizar los bloques de curso directamente en las celdas
+    // Esperar a que la tabla se renderice para obtener las referencias a las celdas
     setTimeout(() => {
-        const thead = scheduleTable.querySelector('thead');
-        const theadHeight = thead ? thead.offsetHeight : 0;
-        const scheduleBodyRect = scheduleBody.getBoundingClientRect();
-        const timeColumn = scheduleBody.querySelector('td');
-        if (!timeColumn) return;
-        const timeColumnWidth = timeColumn.offsetWidth;
-        const dayColumnWidth = (scheduleBodyRect.width - timeColumnWidth) / days.length;
-        const totalMinutesInDay = (22 * 60 + 10) - (8 * 60); // de 8:00 a 22:10
-
         selectedCourses.forEach(selected => {
             const course = selected.curso;
             const section = selected.seccion;
@@ -213,28 +209,35 @@ function removeCourse(courseCode) {
                 const dayIndex = days.indexOf(clase.dia);
 
                 if (dayIndex !== -1) {
-                    const top = theadHeight + ((classRange.start - (8 * 60)) / totalMinutesInDay) * scheduleBodyRect.height;
-                    const height = ((classRange.end - classRange.start) / totalMinutesInDay) * scheduleBodyRect.height;
-                    const left = timeColumnWidth + (dayIndex * dayColumnWidth);
-
-                    const block = document.createElement('div');
-                    block.className = 'class-block absolute';
-                    block.style.left = `${left}px`;
-                    block.style.top = `${top}px`;
-                    block.style.width = `${dayColumnWidth - 2}px`; // -2 for some margin
-                    block.style.height = `${height}px`;
-                    block.style.backgroundColor = color;
-                    block.style.borderColor = darkenColor(color, -30);
-
-                    let timeHtml = '';
-                    const startTime = clase.hora.split(' a ')[0].trim();
-                    if (!standardStartTimes.includes(startTime)) {
-                        timeHtml = `<p class="text-xs">${clase.hora}</p>`;
+                    // Find the row based on the class start time
+                    const startTimeMinutes = classRange.start;
+                    let rowIndex = -1;
+                    for (let i = 0; i < timeSlots.length; i++) {
+                        if (startTimeMinutes >= timeToMinutes(timeSlots[i].start) && startTimeMinutes < timeToMinutes(timeSlots[i].end)) {
+                            rowIndex = i;
+                            break;
+                        }
                     }
 
-                    block.innerHTML = `<strong class="font-bold">${course.nombre}</strong><p class="text-xs">${section.docente}</p>${timeHtml}<p class="text-xs">Aula: ${clase.aula} (${clase.tipo})</p>`;
-                    
-                    scheduleOverlay.appendChild(block);
+                    if (rowIndex !== -1) {
+                        const targetCell = scheduleBody.rows[rowIndex].cells[dayIndex + 1]; // +1 for time column
+
+                        let timeHtml = '';
+                        const startTime = clase.hora.split(' a ')[0].trim();
+                        if (!standardStartTimes.includes(startTime)) {
+                            timeHtml = `<p class="text-xs">${clase.hora}</p>`;
+                        }
+
+                        const blockContent = `<strong class="font-bold">${course.nombre}</strong><p class="text-xs">${section.docente}</p>${timeHtml}<p class="text-xs">Aula: ${clase.aula} (${clase.tipo})</p>`;
+                        
+                        // Append content to the cell, or replace if it's the first class
+                        if (targetCell.innerHTML === '') {
+                            targetCell.innerHTML = `<div class="class-block" style="background-color: ${color}; border-color: ${darkenColor(color, -30)};">${blockContent}</div>`;
+                        } else {
+                            // If there's already content, append the new block
+                            targetCell.innerHTML += `<div class="class-block mt-1" style="background-color: ${color}; border-color: ${darkenColor(color, -30)};">${blockContent}</div>`;
+                        }
+                    }
                 }
             });
         });
@@ -547,6 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelConflictBtn = document.getElementById('cancel-conflict-btn');
 
     saveScheduleBtn.addEventListener('click', saveSchedule);
+    clearScheduleBtn.addEventListener('click', clearSchedule); // Add event listener for clear button
 
     // Event listener for replacing a course after conflict
     replaceCourseBtn.addEventListener('click', () => {
@@ -573,3 +577,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// Modified editSchedule function
+function editSchedule(scheduleId) {
+    const savedSchedules = JSON.parse(localStorage.getItem('savedSchedules')) || [];
+    const scheduleToEdit = savedSchedules.find(s => s.id === scheduleId);
+
+    if (scheduleToEdit) {
+        selectedCourses = scheduleToEdit.courses;
+        updateUI();
+        renderCourseList(); // Re-render course list to update radio buttons
+
+        // Uncheck all radio buttons first
+        document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+
+        // Check the radio buttons for the loaded courses and expand their cycles
+        selectedCourses.forEach(course => {
+            const radio = document.querySelector(`input[name="course-${course.curso.codigo}"][value="${course.seccion.id}"]`);
+            if (radio) {
+                radio.checked = true;
+
+                // Expand the cycle if it's hidden
+                const cycleCoursesDiv = radio.closest('.cycle-courses');
+                if (cycleCoursesDiv && cycleCoursesDiv.classList.contains('hidden')) {
+                    const cycleHeader = cycleCoursesDiv.previousElementSibling;
+                    if (cycleHeader) {
+                        toggleCycle(cycleHeader);
+                    }
+                }
+            }
+        });
+    }
+}

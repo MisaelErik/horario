@@ -1,367 +1,117 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Chifa Brillo del Sol — Tradición y Sabor Chino Peruano en Lima</title>
-  <meta name="description" content="Descubre el auténtico sabor del chifa en Brillo del Sol. Platos generosos, wok al instante y sedes en Pueblo Libre, San Miguel y Minka. ¡Pide online o visítanos!" />
-  <meta name="keywords" content="chifa, comida china, chifa en lima, restaurante peruano, chaufa, aeropuerto, chijaukay, delivery chifa" />
-  <link rel="icon" type="image/png" href="https://i.ibb.co/1tZMVg5V/image.png">
-  <meta property="og:title" content="Chifa Brillo del Sol — Sabor que Ilumina" />
-  <meta property="og:description" content="La perfecta fusión de la cocina china y el corazón peruano. Disfruta de porciones generosas y un sabor inconfundible en nuestros locales de Lima." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://images.unsplash.com/photo-1585849834903-9e8940597235?q=80&w=1200&auto=format&fit=crop" />
-  <meta property="og:url" content="https://chifabrillodelsol.example.com" />
-  <meta name="theme-color" content="#f59e0b" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-
-  <!-- JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Restaurant",
-    "name": "Chifa Brillo del Sol",
-    "image": [
-      "https://images.unsplash.com/photo-1557872943-16a5ac26437b?q=80&w=1600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1604908176997-431d28e6a7c3?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1585849834903-9e8940597235?q=80&w=1200&auto=format&fit=crop"
-     ],
-    "servesCuisine": ["Chinese","Chifa", "Peruvian"],
-    "address": [
-      { "@type": "PostalAddress", "streetAddress": "Pasaje Rosa Toledo 411", "addressLocality": "Pueblo Libre", "addressRegion": "Lima", "postalCode": "15084", "addressCountry": "PE" },
-      { "@type": "PostalAddress", "streetAddress": "Av. Universitaria 701", "addressLocality": "San Miguel", "addressRegion": "Lima", "postalCode": "15088", "addressCountry": "PE" },
-      { "@type": "PostalAddress", "streetAddress": "Centro Comercial Minka", "addressLocality": "Callao", "addressRegion": "Callao", "postalCode": "07006", "addressCountry": "PE" }
-    ],
-    "telephone": ["+51913496301", "+5115664099"],
-    "url": "https://chifabrillodelsol.example.com",
-    "priceRange": "S/15 - S/50",
-    "sameAs": ["https://www.facebook.com/chifaelsolperu/", "https://www.tiktok.com/@chifabrilloelsol"],
-    "openingHoursSpecification": [
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "12:00", "closes": "23:00" },
-        { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "12:00", "closes": "22:00" }
-    ],
-    "review": [
-        { "@type": "Review", "author": {"@type": "Person", "name": "Carla P."}, "reviewRating": {"@type": "Rating", "ratingValue": "5"}, "reviewBody": "¡El mejor Kam Lu Wantán que he probado! Las porciones son enormes, de un plato comemos dos. El ambiente es súper acogedor y la dueña siempre está pendiente de todo. ¡Volveremos!" },
-        { "@type": "Review", "author": {"@type": "Person", "name": "Jorge S."}, "reviewRating": {"@type": "Rating", "ratingValue": "5"}, "reviewBody": "Servicio de primera, muy rápido y amables. El pollo enrollado con salsa de champiñones es un 10/10. Precios justos para la calidad y cantidad. Totalmente recomendado para ir en familia." },
-        { "@type": "Review", "author": {"@type": "Person", "name": "Maria F."}, "reviewRating": {"@type": "Rating", "ratingValue": "5"}, "reviewBody": "Me encanta que tengan refill de chaufa en Pueblo Libre. La sopa wantán es deliciosa, como hecha en casa. Un lugar limpio, moderno y con salones amplios." }
-    ]
-  }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificador de Horarios - FCA UNAC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800">
 
-  <main>
-    <!-- Sticky CTA -->
-    <div class="sticky-cta" role="navigation" aria-label="Accesos rápidos">
-      <div class="sticky-cta__inner">
-        <a href="#ordenar">Pedir ahora</a>
-        <span>•</span>
-        <a href="menu.html">Ver menú</a>
-        <span>•</span>
-        <a href="#reseñas">Reseñas</a>
-      </div>
-    </div>
+    <div class="container mx-auto p-4 md:p-6">
+        <header class="text-center mb-6">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-800">Planificador de Horarios 2025-B</h1>
+            <p class="text-gray-600 mt-1">Facultad de Ciencias Administrativas - UNAC</p>
+        </header>
 
-    <!-- Hero Carousel -->
-    <header class="hero" id="inicio">
-      <div class="hero__carousel">
-        <div class="hero__slide active">
-            <img class="hero__img" src="https://images.unsplash.com/photo-1557872943-16a5ac26437b?q=80&w=1600&auto=format&fit=crop&brightness=0.8" alt="Cocinero salteando en un wok con fuego alto, una técnica clave del chifa.">
-        </div>
-        <div class="hero__slide">
-            <img class="hero__img" src="https://images.unsplash.com/photo-1585849834903-9e8940597235?q=80&w=1600&auto=format&fit=crop&brightness=0.8" alt="Mesa servida con variedad de platos de chifa, incluyendo arroz chaufa y tallarines.">
-        </div>
-        <div class="hero__slide">
-            <img class="hero__img" src="https://images.unsplash.com/photo-1623341214825-9f4f963727da?q=80&w=1600&auto=format&fit=crop&brightness=0.8" alt="Primer plano de un plato de Pollo Chijaukay, crujiente y bañado en su salsa característica.">
-        </div>
-      </div>
-      <div class="hero__overlay"></div>
-      <div class="hero__content container">
-        <h1 class="title">Chifa Brillo del Sol</h1>
-        <p class="subtitle">Donde el sabor brilla: wok al fuego vivo, porciones generosas y el clásico toque peruano que nos hace únicos.</p>
-        <div class="space"></div>
-        <div class="row">
-          <a class="btn btn--brand" href="#ordenar">Pide Ahora por WhatsApp</a>
-          <a class="btn btn--ghost" href="menu.html">Ver el Menú</a>
-        </div>
-      </div>
-    </header>
-
-    <!-- Top nav / branch switcher -->
-    <nav class="topnav">
-      <div class="container">
-        <strong>Nuestras Sedes:</strong>
-        <div class="chips" id="chips">
-          <button class="chip chip--active" data-branch="pueblo">Pueblo Libre</button>
-          <button class="chip" data-branch="sanmiguel">San Miguel</button>
-          <button class="chip" data-branch="minka">Minka (Callao)</button>
-        </div>
-        <div class="topnav__links">
-          <a href="#ordenar">Cómo llegar</a>
-          <a href="#faq">Preguntas</a>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Menú destacados -->
-    <section id="menu">
-      <div class="container">
-        <h2 class="section-title">Los Favoritos de la Casa</h2>
-        <p class="section-subtitle">Estos son los platos que nuestros clientes aclaman. Sabor y calidad garantizados en cada bocado.</p>
-
-        <div class="grid grid--4" style="margin-top:18px">
-          <article class="card">
-            <img src="https://images.unsplash.com/photo-1604908176997-431d28e6a7c3?q=80&w=800&auto=format&fit=crop" alt="Plato de Arroz Chaufa Especial, salteado al wok." class="card__image">
-            <div class="card__pad">
-              <div class="row" style="justify-content:space-between"><h3>Chaufa Especial</h3><strong style="color:#9a6700">S/ 26</strong></div>
-              <p class="muted">El clásico arroz salteado al wok con sillao de la casa, trozos de chancho, pollo y verduras frescas.</p>
-            </div>
-          </article>
-          <article class="card">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop" alt="Plato de Aeropuerto, combinación de chaufa y tallarín saltado." class="card__image">
-            <div class="card__pad">
-              <div class="row" style="justify-content:space-between"><h3>Aeropuerto</h3><strong style="color:#9a6700">S/ 29</strong></div>
-              <p class="muted">La combinación perfecta para indecisos: nuestro chaufa y tallarín saltado en un solo plato.</p>
-            </div>
-          </article>
-          <article class="card">
-            <img src="https://images.unsplash.com/photo-1611599533332-e3c8c1a875ad?q=80&w=800&auto=format&fit=crop" alt="Plato de Pollo Chijaukay, crujiente y jugoso." class="card__image">
-            <div class="card__pad">
-              <div class="row" style="justify-content:space-between"><h3>Pollo Chijaukay</h3><strong style="color:#9a6700">S/ 30</strong></div>
-              <p class="muted">Trozos de pollo crocantes bañados en nuestra inconfundible salsa de kión, maní y especias.</p>
-            </div>
-          </article>
-          <article class="card">
-            <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=800&auto=format&fit=crop" alt="Tazón de Sopa Wantán casera." class="card__image">
-            <div class="card__pad">
-              <div class="row" style="justify-content:space-between"><h3>Sopa Wantán</h3><strong style="color:#9a6700">S/ 12</strong></div>
-              <p class="muted">El caldo que reconforta el alma, con wantanes rellenos de la casa y un toque de cebollita china.</p>
-            </div>
-          </article>
-        </div>
-        <p style="text-align:center; margin-top: 24px;"><a href="menu.html" class="btn btn--brand">Ver la Carta Completa</a></p>
-      </div>
-    </section>
-
-    <!-- Nuestra Historia -->
-    <section id="nosotros">
-        <div class="container grid grid--2-1" style="align-items: center;">
-            <div>
-                <h2 class="section-title" style="text-align:left;">Nuestra Historia</h2>
-                <p class="muted" style="text-align:left; max-width:none;">
-                    En <strong>Chifa Brillo del Sol</strong>, llevamos años perfeccionando la fusión de la cocina china con los sabores del Perú. Nuestra misión es simple: servir platos generosos, llenos de sabor y preparados al momento en el calor del wok. Nos enorgullece ser un punto de encuentro para familias y amigos en Lima, ofreciendo una experiencia auténtica y memorable en cada una de nuestras sedes.
-                </p>
-            </div>
-            <aside aria-label="Video de cocina">
-                <a href="https://www.youtube.com/watch?v=7NUhv4Ncy0g" target="_blank" class="video-thumb">
-                    <img src="https://i.ytimg.com/vi/7NUhv4Ncy0g/maxresdefault.jpg" alt="Video sobre la preparación de comida en Chifa Brillo del Sol" style="width:100%; aspect-ratio:16/9; object-fit:cover;">
-                    <div class="video-thumb__play-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M19.822 7.422a2.434 2.434 0 0 0-1.72-1.72C16.538 5.25 12 5.25 12 5.25s-4.538 0-6.102.452a2.434 2.434 0 0 0-1.72 1.72C3.726 9.07 3.75 12 3.75 12s-.024 2.93.452 4.578a2.434 2.434 0 0 0 1.72 1.72C7.462 18.75 12 18.75 12 18.75s4.538 0 6.102-.452a2.434 2.434 0 0 0 1.72-1.72c.476-1.648.452-4.578.452-4.578s.024-2.93-.452-4.578ZM9.75 14.625v-5.25l4.5 2.625-4.5 2.625Z" clip-rule="evenodd"></path></svg>
-                    </div>
-                </a>
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Columna de Cursos -->
+            <aside class="lg:w-1/4 bg-white p-4 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">Cursos Disponibles</h2>
+                <div id="course-list" class="space-y-2 max-h-[75vh] overflow-y-auto pr-2">
+                    <!-- Los ciclos y cursos se cargarán aquí -->
+                </div>
             </aside>
-        </div>
-    </section>
 
-    <!-- Reviews Section -->
-    <section id="reseñas" style="background:#fafafa; border-block:1px solid var(--border)">
-        <div class="container">
-            <h2 class="section-title">Lo que dicen nuestros clientes</h2>
-            <p class="section-subtitle">Nos enorgullece leer sus comentarios. Estas son algunas de las reseñas que más nos motivan.</p>
-            <div class="grid grid--3">
-                <div class="card card__pad review-card">
-                    <div class="review-card__avatar" style="background-color: #e85d75;">C</div>
-                    <div class="review-card__name">Carla P.</div>
-                    <div class="review-card__stars">★★★★★</div>
-                    <p class="muted">"¡El mejor Kam Lu Wantán que he probado! Las porciones son enormes, de un plato comemos dos. El ambiente es súper acogedor y la dueña siempre está pendiente de todo. ¡Volveremos!"</p>
+            <!-- Columna de Horario y Cursos Seleccionados -->
+            <main class="lg:w-3/4">
+                <div id="schedule-container" class="bg-white p-4 rounded-lg shadow-lg">
+                    <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                        <h2 class="text-xl font-bold text-center flex-grow">Mi Horario</h2>
+                        <div class="flex gap-2 flex-wrap">
+                            <button id="save-schedule-btn" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V4z"></path></svg>
+                                Guardar
+                            </button>
+                            <button id="download-png-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                PNG
+                            </button>
+                            <button id="download-pdf-btn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                PDF
+                            </button>
+                            <button id="download-excel-btn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                                Excel
+                            </button>
+                            <button id="clear-schedule-btn" class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition-colors flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm.002 4a1 1 0 00-.002 2h.002a1 1 0 00.002-2H7z" clip-rule="evenodd" /></svg>
+                                Limpiar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto relative">
+                        <table id="schedule-table" class="w-full border-collapse text-center">
+                            <thead>
+                                <tr class="bg-blue-100">
+                                    <th class="border p-2 w-1/7">Hora</th>
+                                    <th class="border p-2 w-1/7">Lunes</th>
+                                    <th class="border p-2 w-1/7">Martes</th>
+                                    <th class="border p-2 w-1/7">Miércoles</th>
+                                    <th class="border p-2 w-1/7">Jueves</th>
+                                    <th class="border p-2 w-1/7">Viernes</th>
+                                    <th class="border p-2 w-1/7">Sábado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schedule-body">
+                                <!-- Las filas del horario se generarán aquí -->
+                            </tbody>
+                        </table>
+                        
+                    </div>
                 </div>
-                <div class="card card__pad review-card">
-                    <div class="review-card__avatar" style="background-color: #5d89e8;">J</div>
-                    <div class="review-card__name">Jorge S.</div>
-                    <div class="review-card__stars">★★★★★</div>
-                    <p class="muted">"Servicio de primera, muy rápido y amables. El pollo enrollado con salsa de champiñones es un 10/10. Precios justos para la calidad y cantidad. Totalmente recomendado para ir en familia."</p>
+
+                <div class="bg-white p-4 rounded-lg shadow-lg mt-6">
+                    <h2 class="text-xl font-bold mb-4">Cursos Seleccionados (<span id="credit-count">0</span> créditos)</h2>
+                    <div id="selected-courses-list" class="space-y-2">
+                        <p class="text-gray-500">Aún no has seleccionado ningún curso.</p>
+                    </div>
                 </div>
-                <div class="card card__pad review-card">
-                    <div class="review-card__avatar" style="background-color: #5de89d;">M</div>
-                    <div class="review-card__name">Maria F.</div>
-                    <div class="review-card__stars">★★★★★</div>
-                    <p class="muted">"Me encanta que tengan refill de chaufa en Pueblo Libre. La sopa wantán es deliciosa, como hecha en casa. Un lugar limpio, moderno y con salones amplios. ¡Gracias!"</p>
-                </div>
+            </main>
+        </div>
+
+        <!-- Sección de Horarios Guardados -->
+        <div class="mt-8">
+            <h2 class="text-2xl font-bold mb-4">Mis Horarios Guardados</h2>
+            <div id="saved-schedules-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Los horarios guardados se mostrarán aquí -->
+                <p class="text-gray-500 col-span-full">Aún no has guardado ningún horario.</p>
             </div>
         </div>
-    </section>
-
-    <!-- Pide Online o Visítanos -->
-    <section id="ordenar">
-      <div class="container">
-        <h2 class="section-title">Pide Online o Visítanos</h2>
-        <p class="section-subtitle">Disfruta del auténtico sabor de Brillo del Sol donde quieras. Pide por WhatsApp para delivery o encuéntranos en nuestros locales.</p>
-        <div class="grid grid--3" style="margin-top:16px">
-          
-          <!-- Sede Pueblo Libre -->
-          <div class="card">
-            <div style="position:relative;">
-              <img src="https://i.ibb.co/Dfw1CQSH/image.png" alt="Fachada del local de Chifa Brillo del Sol en Pueblo Libre" class="card__image">
-              <span class="tag" style="position:absolute; top:12px; right:12px; background: var(--brand); color: var(--brand-ink);">¡Refill de Chaufa!</span>
-            </div>
-            <div class="card__pad">
-              <strong style="font-size:18px">Pueblo Libre</strong>
-              <p class="muted">Pasaje Rosa Toledo 411<br>L–S 12–23h, D 12–22h<br>📞 987 056 791 / 913 496 301</p>
-              <div class="row" style="margin-top:auto;">
-                <a class="btn" style="flex-grow:1; text-align:center; background:#25D366; color:#fff" href="https://wa.me/51987056791" target="_blank">WhatsApp 1</a>
-                <a class="btn" style="flex-grow:1; text-align:center; background:#25D366; color:#fff" href="https://wa.me/51913496301" target="_blank">WhatsApp 2</a>
-              </div>
-            </div>
-            <div class="card__pad" style="padding-top:0;">
-              <div style="aspect-ratio:16/9; border:1px solid var(--border); border-radius:14px; overflow:hidden">
-                <iframe title="Mapa Pueblo Libre" width="100%" height="100%" style="border:0" src="https://www.google.com/maps?q=Pasaje%20Rosa%20Toledo%20411%20Pueblo%20Libre%20Lima&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-              </div>
-            </div>
-            </div>
-
-          <!-- Sede San Miguel -->
-          <div class="card">
-            <img src="https://i.ibb.co/k2c892DX/image.png" alt="Interior del restaurante Chifa Brillo del Sol en San Miguel" class="card__image">
-            <div class="card__pad">
-              <strong style="font-size:18px">San Miguel</strong>
-              <p class="muted">Av. Universitaria 701<br>Todos los días 12–23h<br>📞 (01) 566-4099</p>
-              <a class="btn" style="width:100%; text-align:center; margin-top:auto; background:#25D366; color:#fff" href="https://wa.me/5115664099" target="_blank">Pedir por WhatsApp</a>
-            </div>
-            <div class="card__pad" style="padding-top:0;">
-              <div style="aspect-ratio:16/9; border:1px solid var(--border); border-radius:14px; overflow:hidden">
-                <iframe title="Mapa San Miguel" width="100%" height="100%" style="border:0" src="https://www.google.com/maps?q=Av.%20Universitaria%20701%20San%20Miguel%20Lima&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sede Minka -->
-          <div class="card">
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1200&auto=format&fit=crop" alt="Patio de comidas del Centro Comercial Minka" class="card__image">
-            <div class="card__pad">
-              <strong style="font-size:18px">Minka (Callao)</strong>
-              <p class="muted">Centro Comercial Minka<br>L–D 11–22h (horario C.C.)<br>📞 964 302 658</p>
-              <a class="btn" style="width:100%; text-align:center; margin-top:auto; background:#25D366; color:#fff" href="https://wa.me/51964302658" target="_blank">Pedir por WhatsApp</a>
-            </div>
-            <div class="card__pad" style="padding-top:0;">
-              <div style="aspect-ratio:16/9; border:1px solid var(--border); border-radius:14px; overflow:hidden">
-                <iframe title="Mapa Minka" width="100%" height="100%" style="border:0" src="https://www.google.com/maps?q=Minka%20Callao&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq" style="background:#fafafa; border-block:1px solid var(--border)">
-      <div class="container" style="max-width: 800px;">
-        <h2 class="section-title">Preguntas Frecuentes</h2>
-        <div class="card" style="margin-top:12px; overflow:hidden">
-          <details class="card__pad" open>
-            <summary style="cursor:pointer; font-weight:700">¿Cómo puedo hacer un pedido?</summary>
-            <p class="muted">Puedes llamar o enviar un mensaje por WhatsApp a nuestras sedes de Pueblo Libre y San Miguel. Para Minka, estamos en las principales apps de delivery o puedes visitarnos en el patio de comidas.</p>
-          </details>
-          <details class="card__pad">
-            <summary style="cursor:pointer; font-weight:700">¿Qué métodos de pago aceptan?</summary>
-            <p class="muted">Aceptamos efectivo, tarjetas de crédito/débito (Visa, Mastercard), Yape y Plin en la mayoría de nuestras sedes. Te recomendamos consultar al momento de ordenar.</p>
-          </details>
-          <details class="card__pad">
-            <summary style="cursor:pointer; font-weight:700">¿Tienen opciones vegetarianas?</summary>
-            <p class="muted">¡Claro! Podemos preparar la mayoría de nuestros salteados solo con verduras de estación. También tenemos Arroz Chaufa de verduras. Por favor, especifica tus requerimientos al ordenar.</p>
-          </details>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container footgrid">
-      <div>
-        <div style="font-size:22px; font-weight:800">Chifa Brillo del Sol</div>
-        <p class="muted">Desde Lima, con la tradición y el sabor que nos une.</p>
-      </div>
-      <div>
-        <strong>Contacto Directo</strong>
-        <ul class="muted" style="list-style:none; padding:0; margin:8px 0 0">
-          <li>Pueblo Libre: 987 056 791 / 913 496 301</li>
-          <li>San Miguel: (01) 566-4099</li>
-          <li>Minka: 964 302 658</li>
-        </ul>
-      </div>
-      <div>
-        <strong>Horarios Referenciales</strong>
-        <ul class="muted" style="list-style:none; padding:0; margin:8px 0 0">
-          <li>Pueblo Libre: L–S 12–23h, D 12–22h</li>
-          <li>San Miguel: Todos los días 12–23h</li>
-          <li>Minka: L–D 11–22h</li>
-        </ul>
-      </div>
-      <div>
-        <strong>Síguenos</strong>
-        <div class="social-icons" style="margin-top:8px">
-          <a href="https://www.facebook.com/profile.php?id=100032452882328" target="_blank" aria-label="Facebook de Pueblo Libre">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5Z"></path></svg>
-          </a>
-          <a href="https://www.facebook.com/profile.php/?id=100057357763599" target="_blank" aria-label="Facebook de Minka">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5Z"></path></svg>
-          </a>
-          <a href="https://www.tiktok.com/@chifabrilloelsol" target="_blank" aria-label="TikTok">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82s.51.5 0 0c-1.4 1.4-1.4 2.81-1.4 4.22v5.37a5.38 5.38 0 1 1-5.38-5.38c.42 0 .84.09 1.25.28v2.12a2.93 2.93 0 0 0-1.25-.28 2.53 2.53 0 1 0 2.53 2.53V8.63c0-2.11 1.4-3.52 2.81-2.81Z"></path></svg>
-          </a>
-          <a href="https.www.tiktok.com/@chifabrilloelsolminka" target="_blank" aria-label="TikTok de Minka">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82s.51.5 0 0c-1.4 1.4-1.4 2.81-1.4 4.22v5.37a5.38 5.38 0 1 1-5.38-5.38c.42 0 .84.09 1.25.28v2.12a2.93 2.93 0 0 0-1.25-.28 2.53 2.53 0 1 0 2.53 2.53V8.63c0-2.11 1.4-3.52 2.81-2.81Z"></path></svg>
-          </a>
-        </div>
-      </div>
     </div>
-    <p class="muted" style="text-align:center; margin-top:32px; font-size:12px;">© <span id="year"></span> Chifa Brillo del Sol. Todos los derechos reservados.</p>
-  </footer>
 
-  <!-- Tip Banner (se activa con scroll) -->
-  <div id="tip-banner" class="tip-banner" aria-live="polite">
-    <div class="tip-banner__inner">
-      <img src="https://i.ibb.co/m5FBN7Km/Gemini-Generated-Image-4nz8c64nz8c64nz8-1.png" alt="Palitos chinos de madera" style="width:64px; height:64px; object-fit:cover; border-radius:14px">
-      <div>
-        <strong>¿Dominas los palitos?</strong>
-        <p class="muted" style="margin:4px 0 8px">¡Te enseñamos cómo! 🍜</p>
-        <div class="row">
-          <button class="btn" style="background:#fff7db; border:1px solid #f6d67f; padding: 8px 12px;" onclick="showPalitosModal()">Ver guía</button>
-          <button class="btn" style="border:1px solid var(--border); background:#fff; padding: 8px 12px;" onclick="hideTipBanner()">Ocultar</button>
+    <!-- Modal para conflictos -->
+    <div id="conflict-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg p-6 max-w-sm w-full text-center shadow-xl transform transition-all scale-95 opacity-0" id="modal-content">
+            <svg class="mx-auto h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <h3 class="text-lg font-bold mt-4">¡Conflicto de Horario!</h3>
+            <p id="conflict-message" class="text-gray-600 mt-2">El curso que intentas agregar se cruza con otro ya seleccionado.</p>
+            <div class="mt-6 flex justify-center gap-4">
+                <button id="replace-course-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Reemplazar</button>
+                <button id="cancel-conflict-btn" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors">Cancelar</button>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- Modal Guía de Palitos -->
-  <div id="palitosModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="palitosModalTitle">
-    <div class="modal__body" onclick="event.stopPropagation()">
-        <button class="modal__close" onclick="closePalitosModal()" aria-label="Cerrar">×</button>
-        <h2 id="palitosModalTitle" class="section-title" style="text-align:left; margin-bottom: 16px;">¡Domina los Palitos!</h2>
-        <ol class="palitos-guide">
-            <li>
-                <div class="step-number">1</div>
-                <div><strong>Palito Base (Fijo):</strong> Sujeta el primer palito como si fuera un lápiz, pero más abajo. Apóyalo entre tu dedo pulgar y el anular. Este palito no se debe mover.</div>
-            </li>
-            <li>
-                <div class="step-number">2</div>
-                <div><strong>Palito Móvil:</strong> Sostén el segundo palito con las yemas de los dedos pulgar, índice y medio, como si fueras a escribir. Este es el que hará todo el movimiento.</div>
-            </li>
-            <li>
-                <div class="step-number">3</div>
-                <div><strong>El Movimiento:</strong> Mantén el palito de abajo quieto y usa tus dedos índice y medio para mover el palito de arriba. La acción es como una pinza.</div>
-            </li>
-            <li>
-                <div class="step-number">4</div>
-                <div><strong>¡A Practicar!:</strong> Intenta pellizcar un wantán o un trozo de pollo. ¡La práctica hace al maestro!</div>
-            </li>
-        </ol>
-    </div>
-  </div>
-
-  <script src="main.js" defer></script>
+    <script src="data/courses.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
