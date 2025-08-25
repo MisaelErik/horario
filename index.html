@@ -3,84 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Planificador de horarios para los estudiantes de la Facultad de Ciencias Administrativas (FCA) de la UNAC. Organiza tus cursos y horarios para el ciclo 2025-B.">
     <title>Planificador de Horarios - FCA UNAC</title>
+    <meta name="description" content="Organiza fácilmente tus cursos y créditos en la Facultad de Ciencias Administrativas UNAC. Descarga tu horario en PDF, Excel o PNG.">
+    <meta name="keywords" content="horarios UNAC, planificador de cursos, FCA UNAC, organizar horarios universidad">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tu-pagina.com/">
+    <meta property="og:title" content="Planificador de Horarios UNAC 2025-B">
+    <meta property="og:description" content="Organiza fácilmente tus cursos y créditos en la Facultad de Ciencias Administrativas UNAC. Descarga tu horario en PDF, Excel o PNG.">
+    <meta property="og:image" content="https://tu-pagina.com/preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://tu-pagina.com/">
+    <meta property="twitter:title" content="Planificador de Horarios UNAC 2025-B">
+    <meta property="twitter:description" content="Organiza fácilmente tus cursos y créditos en la Facultad de Ciencias Administrativas UNAC. Descarga tu horario en PDF, Excel o PNG.">
+    <meta property="twitter:image" content="https://tu-pagina.com/preview.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gradient-to-br from-blue-50 to-gray-100 text-gray-800">
 
-    <div class="container mx-auto p-4 md:p-6">
-        <header class="text-center mb-6">
-            <h1 class="text-3xl md:text-4xl font-bold text-blue-800">Planificador de Horarios 2025-B</h1>
-            <p class="text-gray-600 mt-1">Facultad de Ciencias Administrativas - UNAC</p>
+    <div class="max-w-full mx-auto p-4 md:p-6 lg:px-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-blue-900 drop-shadow-lg">
+              Planificador de Horarios 2025-B
+            </h1>
+            <p class="text-lg text-gray-600 mt-2">
+              Facultad de Ciencias Administrativas - UNAC
+            </p>
         </header>
 
-        <div class="flex flex-col lg:flex-row gap-6">
+        <div class="flex flex-col lg:flex-row gap-8">
             <!-- Columna de Cursos -->
-            <aside class="lg:w-1/4 bg-white p-4 rounded-lg shadow-lg">
-                <h2 class="text-xl font-bold mb-4 border-b pb-2">Cursos Disponibles</h2>
-                <div id="course-list" class="space-y-2 max-h-[75vh] overflow-y-auto pr-2">
+            <aside class="lg:w-1/4 bg-white p-4 rounded-2xl shadow-xl">
+                <h2 class="text-2xl font-bold text-blue-700 mb-4">Cursos Disponibles</h2>
+                
+                <div class="mb-4">
+                    <select id="cycle-filter" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition">
+                        <option value="">Todos los ciclos</option>
+                    </select>
+                </div>
+
+                <div id="course-list" class="space-y-3 max-h-[65vh] overflow-y-auto pr-2">
                     <!-- Los ciclos y cursos se cargarán aquí -->
                 </div>
             </aside>
 
             <!-- Columna de Horario y Cursos Seleccionados -->
             <main class="lg:w-3/4">
-                <div id="schedule-container" class="bg-white p-4 rounded-lg shadow-lg">
-                    <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
-                        <h2 class="text-xl font-bold text-center flex-grow">Mi Horario</h2>
-                        <div class="flex gap-2 flex-wrap">
-                            <button id="save-schedule-btn" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><title>Guardar</title><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V4z"></path></svg>
-                                Guardar
-                            </button>
-                            <button id="download-png-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><title>Descargar PNG</title><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-                                PNG
-                            </button>
-                            <button id="download-pdf-btn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><title>Descargar PDF</title><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-                                PDF
-                            </button>
-                            <button id="download-excel-btn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><title>Descargar Excel</title><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-                                Excel
-                            </button>
-                            <button id="clear-schedule-btn" class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition-colors flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><title>Limpiar Horario</title><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm.002 4a1 1 0 00-.002 2h.002a1 1 0 00.002-2H7z" clip-rule="evenodd" /></svg>
-                                Limpiar
-                            </button>
-                        </div>
-                    </div>
-                    <div class="overflow-x-auto relative">
-                        <table id="schedule-table" class="w-full border-collapse text-center">
-                            <thead>
-                                <tr class="bg-blue-100">
-                                    <th class="border p-2 w-1/7">Hora</th>
-                                    <th class="border p-2 w-1/7">Lunes</th>
-                                    <th class="border p-2 w-1/7">Martes</th>
-                                    <th class="border p-2 w-1/7">Miércoles</th>
-                                    <th class="border p-2 w-1/7">Jueves</th>
-                                    <th class="border p-2 w-1/7">Viernes</th>
-                                    <th class="border p-2 w-1/7">Sábado</th>
-                                </tr>
-                            </thead>
-                            <tbody id="schedule-body">
-                                <!-- Las filas del horario se generarán aquí -->
-                            </tbody>
-                        </table>
+                <div id="schedule-container" class="bg-white rounded-2xl shadow-xl p-6">
+                    <div class="flex justify-between items-center mb-6 flex-wrap gap-3">
+                      <h2 class="text-2xl font-bold text-blue-700">Mi Horario</h2>
+                      <div class="flex flex-wrap gap-2">
+                        <button id="save-schedule-btn" class="px-4 py-2 rounded-xl bg-gradient-to-r from-yellow-500 to-yellow-600 text-white font-semibold hover:shadow-md transition-transform transform hover:scale-105 flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><title>Guardar</title><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V4z"></path></svg>Guardar</button>
                         
+                        <!-- Botones de descarga para desktop -->
+                        <div class="hidden md:flex flex-wrap gap-2">
+                            <button id="download-png-btn" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-transform transform hover:scale-105">PNG</button>
+                            <button id="download-pdf-btn" class="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition-transform transform hover:scale-105">PDF</button>
+                            <button id="download-excel-btn" class="px-4 py-2 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition-transform transform hover:scale-105">Excel</button>
+                        </div>
+
+                        <!-- Menú desplegable para móvil -->
+                        <div class="md:hidden relative" id="download-menu-container">
+                            <button id="download-menu-btn" class="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-transform transform hover:scale-105 flex items-center gap-2">
+                                <span>Descargar</span>
+                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                            </button>
+                            <div id="download-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20 hidden">
+                                <a href="#" id="download-png-menu" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">PNG</a>
+                                <a href="#" id="download-pdf-menu" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">PDF</a>
+                                <a href="#" id="download-excel-menu" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Excel</a>
+                            </div>
+                        </div>
+
+                        <button id="clear-schedule-btn" class="px-4 py-2 rounded-xl bg-gray-400 text-white font-semibold hover:bg-gray-500 transition-transform transform hover:scale-105">Limpiar</button>
+                      </div>
+                    </div>
+                  
+                    <div class="overflow-x-auto rounded-lg border border-gray-200">
+                      <table id="schedule-table" class="w-full text-center border-collapse">
+                        <thead class="bg-gradient-to-r from-blue-100 to-blue-200">
+                          <tr>
+                            <th class="border-b p-3 font-semibold text-blue-900 sticky left-0 bg-blue-100">Hora</th>
+                            <th class="border-b p-3 font-semibold text-blue-900">Lunes</th>
+                            <th class="border-b p-3 font-semibold text-blue-900">Martes</th>
+                            <th class="border-b p-3 font-semibold text-blue-900">Miércoles</th>
+                            <th class="border-b p-3 font-semibold text-blue-900">Jueves</th>
+                            <th class="border-b p-3 font-semibold text-blue-900">Viernes</th>
+                            <th class="border-b p-3 font-semibold text-blue-900">Sábado</th>
+                          </tr>
+                        </thead>
+                        <tbody id="schedule-body" class="divide-y divide-gray-100">
+                          <!-- Aquí se generan las filas dinámicas -->
+                        </tbody>
+                      </table>
                     </div>
                 </div>
 
-                <div class="bg-white p-4 rounded-lg shadow-lg mt-6">
-                    <h2 class="text-xl font-bold mb-4">Cursos Seleccionados (<span id="credit-count">0</span> créditos)</h2>
-                    <div id="selected-courses-list" class="space-y-2">
+                <div class="bg-white p-6 rounded-2xl shadow-xl mt-8">
+                    <h2 class="text-2xl font-bold text-blue-700 mb-4 flex justify-between items-center">
+                        <span>Cursos Seleccionados</span>
+                        <span id="credit-count-badge" class="px-3 py-1 text-sm font-bold text-white bg-blue-600 rounded-full">0 créditos</span>
+                    </h2>
+                    <div id="selected-courses-list" class="flex flex-wrap gap-3">
                         <p class="text-gray-500">Aún no has seleccionado ningún curso.</p>
                     </div>
                 </div>
@@ -88,26 +121,26 @@
         </div>
 
         <!-- Sección de Horarios Guardados -->
-        <div class="mt-8">
-            <h2 class="text-2xl font-bold mb-4">Mis Horarios Guardados</h2>
-            <div id="saved-schedules-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="mt-12">
+            <h2 class="text-3xl font-bold text-blue-800 mb-6 text-center">Mis Horarios Guardados</h2>
+            <div id="saved-schedules-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Los horarios guardados se mostrarán aquí -->
-                <p class="text-gray-500 col-span-full">Aún no has guardado ningún horario.</p>
+                <p class="text-gray-500 col-span-full text-center">Aún no has guardado ningún horario.</p>
             </div>
         </div>
     </div>
 
     <!-- Modal para conflictos -->
-    <div id="conflict-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-lg p-6 max-w-sm w-full text-center shadow-xl transform transition-all scale-95 opacity-0" id="modal-content">
-            <svg class="mx-auto h-16 w-16 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div id="conflict-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl transform transition-all scale-95 opacity-0" id="modal-content">
+            <svg class="mx-auto h-20 w-20 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-            <h3 class="text-lg font-bold mt-4">¡Conflicto de Horario!</h3>
-            <p id="conflict-message" class="text-gray-600 mt-2">El curso que intentas agregar se cruza con otro ya seleccionado.</p>
-            <div class="mt-6 flex justify-center gap-4">
-                <button id="replace-course-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Reemplazar</button>
-                <button id="cancel-conflict-btn" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors">Cancelar</button>
+            <h3 class="text-2xl font-bold mt-5">¡Conflicto de Horario!</h3>
+            <p id="conflict-message" class="text-gray-600 mt-3 text-lg">El curso que intentas agregar se cruza con otro ya seleccionado.</p>
+            <div class="mt-8 flex justify-center gap-4">
+                <button id="replace-course-btn" class="px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-transform transform hover:scale-105">Reemplazar</button>
+                <button id="cancel-conflict-btn" class="px-6 py-3 rounded-xl bg-gray-300 text-gray-800 font-semibold hover:bg-gray-400 transition-transform transform hover:scale-105">Cancelar</button>
             </div>
         </div>
     </div>
