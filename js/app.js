@@ -96,6 +96,7 @@ function clearSchedule() {
     selectedCourses = [];
     document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
     updateUI();
+    showNotification('¡Horario limpiado exitosamente!', 'error');
 }
 
 // --- RENDERIZADO Y UI ---
@@ -300,6 +301,7 @@ async function saveSchedule() {
     savedSchedules.push(newSavedSchedule);
     localStorage.setItem('savedSchedules', JSON.stringify(savedSchedules));
     renderSavedSchedules();
+    showNotification('¡Horario guardado exitosamente!');
 }
 
 function renderSavedSchedules() {
@@ -393,6 +395,7 @@ function deleteSchedule(scheduleId) {
     savedSchedules = savedSchedules.filter(s => s.id !== scheduleId);
     localStorage.setItem('savedSchedules', JSON.stringify(savedSchedules));
     renderSavedSchedules();
+    showNotification('¡Horario eliminado exitosamente!', 'error');
 }
 
 function editSchedule(scheduleId) {
@@ -472,6 +475,7 @@ async function downloadSchedule(format) {
             link.download = `horario-${studentName || '2025-B'}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
+            showNotification('¡PNG descargado exitosamente!');
         } else if (format === 'pdf') {
             const imgData = canvas.toDataURL('image/png');
             const { jsPDF } = window.jspdf;
@@ -482,12 +486,33 @@ async function downloadSchedule(format) {
             });
             pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
             pdf.save(`horario-${studentName || '2025-B'}.pdf`);
+            showNotification('¡PDF descargado exitosamente!');
         }
     } catch (err) {
         console.error(`Error al generar ${format.toUpperCase()}:`, err);
     } finally {
         document.body.removeChild(printContainer);
     }
+}
+
+// --- LÓGICA DE NOTIFICACIONES ---
+
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
 }
 
 // --- MANEJO DE EVENTOS ---
@@ -538,6 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Horario');
         XLSX.writeFile(wb, 'programacion-horaria-2025-B.xlsx');
+        showNotification('¡Excel descargado exitosamente!');
     });
 
     downloadMenuBtn.addEventListener('click', () => {
