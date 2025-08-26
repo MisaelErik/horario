@@ -177,7 +177,12 @@ function renderSchedule() {
         const row = document.createElement('tr');
         const timeCell = document.createElement('td');
         timeCell.className = 'border-b border-gray-200 p-2 font-medium text-xs text-gray-600 sticky left-0 bg-white';
-        timeCell.style.height = `${60 * pixelsPerMinute}px`;
+        
+        let rowHeight = 60;
+        if (hour === scheduleEndHour - 1) { // Last hour
+            rowHeight = 70; // 60 minutes + 10 minutes to show up to 22:10
+        }
+        timeCell.style.height = `${rowHeight * pixelsPerMinute}px`;
         timeCell.textContent = `${String(hour).padStart(2, '0')}:00`;
         row.appendChild(timeCell);
 
